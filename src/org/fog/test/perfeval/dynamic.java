@@ -139,7 +139,7 @@ public class dynamic
 		FogDevice end = createFogDevice("e-"+endPartialName, 3200, 1000, 10000, 270, 2, 0, 87.53, 82.44);
 		end.setParentId(parentId);
 		idOfEndDevices.add(end.getId());
-		Sensor sensor = new Sensor("s-"+endPartialName, "IoTSen-sor", userId, appId, new DeterministicDistribution(sensingInterval)); // inter-transmission time of EEG sensor follows a deterministic dis-tribution
+		Sensor sensor = new Sensor("s-"+endPartialName, "IoTSensor", userId, appId, new DeterministicDistribution(sensingInterval)); // inter-transmission time of EEG sensor follows a deterministic dis-tribution
 		sensors.add(sensor);
 		Actuator actuator = new Actuator("a-"+endPartialName, userId, appId, "IoTActuator");
 		actuators.add(actuator);
@@ -203,13 +203,13 @@ public class dynamic
 		application.addAppModule("mainModule", 50, 1500, 4000, 800);
 		application.addAppModule("storageModule", 10, 50, 12000, 100);
 		application.addAppEdge("IoTSensor", "clientModule", 100, 200, "IoTSensor", Tuple.UP, AppEdge.SENSOR);
-		application.addAppEdge("clientModule", "mainModule", 6000, 600 , "RawData", Tuple.UP, AppEdge.MODULE);
+		/*application.addAppEdge("clientModule", "mainModule", 6000, 600 , "RawData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("mainModule", "storageModule", 1000, 300, "StoreData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("mainModule", "clientModule", 100, 50, "ResultData", Tuple.DOWN, AppEdge.MODULE);
-		application.addAppEdge("clientModule", "IoTActuator", 100, 50, "Response", Tuple.DOWN, AppEdge.ACTUATOR);
+		application.addAppEdge("clientModule", "IoTActuator", 100, 50, "Response", Tuple.DOWN, AppEdge.ACTUATOR);*/
 		application.addTupleMapping("clientModule", "IoTSensor", "RawData", new FractionalSelectivity(1.0));
-		application.addTupleMapping("mainModule", "RawData", "Result-Data", new FractionalSelectivity(1.0));
-		application.addTupleMapping("mainModule", "RawData", "StoreData", new FractionalSelectivity(1.0));
+		/*application.addTupleMapping("mainModule", "RawData", "Result-Data", new FractionalSelectivity(1.0));
+		application.addTupleMapping("mainModule", "RawData", "StoreData", new FractionalSelectivity(1.0));*/
 		application.addTupleMapping("clientModule", "ResultData", "Response", new FractionalSelectivity(1.0));
 		
 		for(int id:idOfEndDevices)
@@ -221,7 +221,8 @@ public class dynamic
 		deadlineInfo.put(id, moduleDeadline);
 		additionalMipsInfo.put(id,moduleAddMips);}
 		
-		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IoTSensor");add("clientModule");add("mainMod-ule");add("clientModule");add("IoTActuator");}});
+		//final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IoTSensor");add("clientModule");add("mainMod-ule");add("clientModule");add("IoTActuator");}});
+		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IotSensor");add("clientModule");add("clientModule");}});
 		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);}};
 		application.setLoops(loops);
 		application.setDeadlineInfo(deadlineInfo);
