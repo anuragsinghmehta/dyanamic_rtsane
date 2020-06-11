@@ -49,7 +49,7 @@ public class dynamic
 	static Map<Integer, Map<String, Integer>> additionalMipsInfo = new HashMap<Integer, Map<String, Integer>>();
 	static boolean CLOUD = false;
 	
-	static int numOfGateways = 2;
+	static int numOfGateways = 1;
 	static int numOfEndDevPerGateway = 1;
 	static double sensingInterval = 5;
 	static double EEG_TRANSMISSION_TIME = 5.1;
@@ -79,8 +79,8 @@ public class dynamic
 			}
 			
 			Controller controller = new Controller("mastercontroller", fogDevices, sensors, actuators);
-			//controller.submitApplication(application, 0, new MyModulePlacement(fogDevices, sensors, actuators, application, moduleMapping,"mainModule"));
-			controller.submitApplication(application,new ModulePlacementMapping(fogDevices, application, moduleMapping));
+			controller.submitApplication(application, 0, new MyModulePlacement(fogDevices, sensors, actuators, application, moduleMapping,"mainModule"));
+			//controller.submitApplication(application,new ModulePlacementMapping(fogDevices, application, moduleMapping));
 			TimeKeeper.getInstance().setSimulationStartTime(Calendar.getInstance().getTimeInMillis());
 			CloudSim.startSimulation();
 			CloudSim.stopSimulation();
@@ -203,13 +203,13 @@ public class dynamic
 		application.addAppModule("mainModule", 50, 1500, 4000, 800);
 		application.addAppModule("storageModule", 10, 50, 12000, 100);
 		application.addAppEdge("IoTSensor", "clientModule", 100, 200, "IoTSensor", Tuple.UP, AppEdge.SENSOR);
-		/*application.addAppEdge("clientModule", "mainModule", 6000, 600 , "RawData", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("clientModule", "mainModule", 6000, 600 , "RawData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("mainModule", "storageModule", 1000, 300, "StoreData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("mainModule", "clientModule", 100, 50, "ResultData", Tuple.DOWN, AppEdge.MODULE);
-		application.addAppEdge("clientModule", "IoTActuator", 100, 50, "Response", Tuple.DOWN, AppEdge.ACTUATOR);*/
+		application.addAppEdge("clientModule", "IoTActuator", 100, 50, "Response", Tuple.DOWN, AppEdge.ACTUATOR);
 		application.addTupleMapping("clientModule", "IoTSensor", "RawData", new FractionalSelectivity(1.0));
-		/*application.addTupleMapping("mainModule", "RawData", "Result-Data", new FractionalSelectivity(1.0));
-		application.addTupleMapping("mainModule", "RawData", "StoreData", new FractionalSelectivity(1.0));*/
+		application.addTupleMapping("mainModule", "RawData", "Result-Data", new FractionalSelectivity(1.0));
+		application.addTupleMapping("mainModule", "RawData", "StoreData", new FractionalSelectivity(1.0));
 		application.addTupleMapping("clientModule", "ResultData", "Response", new FractionalSelectivity(1.0));
 		
 		for(int id:idOfEndDevices)
@@ -221,8 +221,8 @@ public class dynamic
 		deadlineInfo.put(id, moduleDeadline);
 		additionalMipsInfo.put(id,moduleAddMips);}
 		
-		//final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IoTSensor");add("clientModule");add("mainMod-ule");add("clientModule");add("IoTActuator");}});
-		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IotSensor");add("clientModule");add("clientModule");}});
+		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IoTSensor");add("clientModule");add("mainMod-ule");add("clientModule");add("IoTActuator");}});
+		//final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IotSensor");add("clientModule");add("clientModule");}});
 		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);}};
 		application.setLoops(loops);
 		application.setDeadlineInfo(deadlineInfo);
