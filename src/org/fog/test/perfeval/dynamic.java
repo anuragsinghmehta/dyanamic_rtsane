@@ -50,7 +50,7 @@ public class dynamic
 	static boolean CLOUD = false;
 	
 	static int numOfGateways = 2;
-	static int numOfEndDevPerGateway = 3;
+	static int numOfEndDevPerGateway = 1;
 	static double sensingInterval = 5;
 	static double EEG_TRANSMISSION_TIME = 5.1;
 	
